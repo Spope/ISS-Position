@@ -1,0 +1,7 @@
+{
+    "name": "Sat",
+    "version": "0.0.1",
+    "dependencies": {
+        "three.js"      : "*"
+    }
+}
