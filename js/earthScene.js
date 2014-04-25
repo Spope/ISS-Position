@@ -3,6 +3,11 @@ var camera, controls, scene, renderer;
 var cross;
 var light;
 var earthMesh;
+var sat;
+var receivedDate;
+var positionData;
+
+var timer;
 
 init();
 animate();
@@ -22,21 +27,28 @@ function init() {
     light.castShadow	= true;
     scene.add(light);
 
+    //Sat
+    var sphere = new THREE.SphereGeometry(0.03, 10, 10);
+    var satMaterial =  new THREE.MeshBasicMaterial({color: 0x00ff00});
+    sat = new THREE.Mesh(sphere, satMaterial);
+    scene.add(sat);
+
 
     //EARTH
     var geometry   = new THREE.SphereGeometry(1, 32, 32);
     var material  = new THREE.MeshPhongMaterial();
     material.map    = THREE.ImageUtils.loadTexture('img/earth/EarthMapAtmos_2500x1250.jpg');
     material.bumpMap    = THREE.ImageUtils.loadTexture('img/earth/EarthElevation_2500x1250.jpg');
-    material.bumpScale = 0.02;
+    material.bumpScale = 0.002;
     material.specularMap    = THREE.ImageUtils.loadTexture('img/earth/EarthMask_2500x1250.jpg');
     material.specular  = new THREE.Color('grey');
 
     earthMesh = new THREE.Mesh(geometry, material);
+    earthMesh.rotation.y = - ( Math.PI / 2 );
     scene.add(earthMesh);
 
     //Cloud
-    var geometry   = new THREE.SphereGeometry(1.01, 32, 32);
+    var geometry   = new THREE.SphereGeometry(1.005, 32, 32);
     var material  = new THREE.MeshPhongMaterial({
       map         : THREE.ImageUtils.loadTexture('img/earth/cloudAlpha.png'),
       opacity     : 1,
@@ -56,6 +68,7 @@ function init() {
     scene.add(mesh);
 
 
+    setXYZ();
 
 
 
@@ -68,16 +81,31 @@ function init() {
 
     // Create an event listener that resizes the renderer with the browser window.
     window.addEventListener('resize', onWindowResize);
+
+    
 }
 
-function drawOrbit(data) {
-    //TEST
-    var lineMaterial = new THREE.LineBasicMaterial({ color: 0xB50015 });
-    var lineGeometry = new THREE.Geometry();
-    for (var i in data) {
-        lineGeometry.vertices.push( new THREE.Vector3( data[i].x, data[i].y, data[i].z) );
-    }
-    var line = new THREE.Line( lineGeometry, lineMaterial ); scene.add( line );
+function setXYZ() {
+    var xMaterial = new THREE.LineBasicMaterial({ color: 0xB50015 });//red
+    var xGeometry = new THREE.Geometry();
+    xGeometry.vertices.push( new THREE.Vector3( 0, 0, 0) );
+    xGeometry.vertices.push( new THREE.Vector3( 2, 0, 0) );
+    var x = new THREE.Line( xGeometry, xMaterial );
+    scene.add( x );
+
+    var yMaterial = new THREE.LineBasicMaterial({ color: 0x0C7A00 });//green
+    var yGeometry = new THREE.Geometry();
+    yGeometry.vertices.push( new THREE.Vector3( 0, 0, 0) );
+    yGeometry.vertices.push( new THREE.Vector3( 0, 2, 0) );
+    var y = new THREE.Line( yGeometry, yMaterial );
+    scene.add( y );
+
+    var zMaterial = new THREE.LineBasicMaterial({ color: 0x05009C });//blue
+    var zGeometry = new THREE.Geometry();
+    zGeometry.vertices.push( new THREE.Vector3( 0, 0, 0) );
+    zGeometry.vertices.push( new THREE.Vector3( 0, 0, 2) );
+    var z = new THREE.Line( zGeometry, zMaterial );
+    scene.add( z );
 }
 
 function onWindowResize() {
@@ -95,8 +123,50 @@ function animate() {
  
     // Read more about requestAnimationFrame at http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
     requestAnimationFrame(animate);
+
+    updateSatPosition();
  
     // Render the scene.
     renderer.render(scene, camera);
     controls.update();
 }
+
+function drawOrbit(data) {
+
+    positionData = data;
+    receivedDate = new Date();
+    var lineMaterial = new THREE.LineBasicMaterial({ color: 0xB50015 });
+    var lineGeometry = new THREE.Geometry();
+    for (var i in data) {
+        lineGeometry.vertices.push( new THREE.Vector3( data[i].x, data[i].y, data[i].z) );
+    }
+    var line = new THREE.Line( lineGeometry, lineMaterial ); scene.add( line );
+
+    sat.position.set( data[0].x, data[0].y, data[0].z )
+    
+}
+
+function updateSatPosition() {
+    if(positionData) {
+        var first = new Date(positionData[0].time);
+        var now = new Date();
+        var seconds = now.getSeconds();
+
+        var deltaMinutes = now.getMinutes() - receivedDate.getMinutes();
+
+        var current = positionData[deltaMinutes];
+        var next    = positionData[deltaMinutes + 1];
+
+        var deltaX  = (next.x - current.x) / 60;
+        var deltaY  = (next.y - current.y) / 60;
+        var deltaZ  = (next.z - current.z) / 60;
+
+        sat.position.set(
+            current.x + (deltaX * seconds),
+            current.y + (deltaY * seconds),
+            current.z + (deltaZ * seconds)
+        );
+
+    }
+}
+
