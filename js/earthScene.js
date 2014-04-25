@@ -70,6 +70,16 @@ function init() {
     window.addEventListener('resize', onWindowResize);
 }
 
+function drawOrbit(data) {
+    //TEST
+    var lineMaterial = new THREE.LineBasicMaterial({ color: 0xB50015 });
+    var lineGeometry = new THREE.Geometry();
+    for (var i in data) {
+        lineGeometry.vertices.push( new THREE.Vector3( data[i].x, data[i].y, data[i].z) );
+    }
+    var line = new THREE.Line( lineGeometry, lineMaterial ); scene.add( line );
+}
+
 function onWindowResize() {
 
     var WIDTH = window.innerWidth;
