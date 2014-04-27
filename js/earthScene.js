@@ -3,6 +3,7 @@ var camera, controls, scene, renderer;
 var cross;
 var light;
 var earthMesh;
+var cloudMesh
 var sat;
 var receivedDate;
 var positionData;
@@ -46,7 +47,8 @@ function init() {
 
     earthMesh = new THREE.Mesh(geometry, material);
     
-    earthMesh.rotation.x  = (Math.PI / 180) * 23.5;
+    
+
     earthMesh.receiveShadow	= true;
 	earthMesh.castShadow	= true;
     scene.add(earthMesh);
@@ -66,7 +68,7 @@ function init() {
       map         : THREE.ImageUtils.loadTexture('img/earth/cloudAlpha.png'),
       transparent : true,
     });
-    var cloudMesh = new THREE.Mesh(geometry, material);
+    cloudMesh = new THREE.Mesh(geometry, material);
     earthMesh.add(cloudMesh);
 
 
@@ -106,6 +108,12 @@ function init() {
     window.addEventListener('resize', onWindowResize);
 
     
+}
+
+//Todo : This will set the earth tilt. Need to add it to the xyz based sat position
+function initEarthRoll () {
+    earthMesh.rotation.x  = (Math.PI / 180) * 23.5;
+    cloudMesh.rotation.x  = (Math.PI / 180) * 23.5;
 }
 
 function setXYZ() {
@@ -180,6 +188,17 @@ function updateSatPosition() {
 
         var current = positionData[deltaMinutes];
         var next    = positionData[deltaMinutes + 1];
+        if(!current) {
+            //when delta is negative
+            console.error('No data for current');
+            console.log(deltaMinutes);
+            console.log(current);
+        }
+        if(!next) {
+            console.error('No data for curret');
+            console.log(deltaMinutes + 1);
+            console.log(next);
+        }
 
         var deltaX  = (next.x - current.x) / 60;
         var deltaY  = (next.y - current.y) / 60;
@@ -195,7 +214,6 @@ function updateSatPosition() {
 }
 
 function updateEarthAngle() {
- //earthMesh.rotation.y = - ( Math.PI / 2 );   
 
     var hourAngle = Math.PI / 12;
     var secondAngle = (hourAngle / 60) / 60;
