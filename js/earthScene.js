@@ -23,7 +23,7 @@ function init() {
 
     //Light
     light = new THREE.DirectionalLight( 0xffffff, 1 );
-    light.position.set( 5, 5, 10 );
+    light.position.set( 0, 0, 5 );
     light.castShadow	= true;
     scene.add(light);
 
@@ -42,20 +42,44 @@ function init() {
     material.bumpScale = 0.002;
     material.specularMap    = THREE.ImageUtils.loadTexture('img/earth/EarthMask_2500x1250.jpg');
     material.specular  = new THREE.Color('grey');
+    material.shininess  = 10;
 
     earthMesh = new THREE.Mesh(geometry, material);
-    earthMesh.rotation.y = - ( Math.PI / 2 );
+    
+    earthMesh.rotation.x  = (Math.PI / 180) * 23.5;
+    earthMesh.receiveShadow	= true;
+	earthMesh.castShadow	= true;
     scene.add(earthMesh);
+
+    //Night texture mesh
+    //var nightLight = new THREE.MeshPhongMaterial();
+    //nightLight.map = THREE.ImageUtils.loadTexture('img/earth/EarthNight_2500x1250.png');
+    //nightLight.emissive  = new THREE.Color( 0xffffff );
+    //nightLight.transparent = true;
+    //var geometryLight   = new THREE.SphereGeometry(1.0001, 32, 32);
+    //var lightMesh = new THREE.Mesh(geometryLight, nightLight);
+    //earthMesh.add(lightMesh);
 
     //Cloud
     var geometry   = new THREE.SphereGeometry(1.005, 32, 32);
     var material  = new THREE.MeshPhongMaterial({
       map         : THREE.ImageUtils.loadTexture('img/earth/cloudAlpha.png'),
-      opacity     : 1,
       transparent : true,
     });
     var cloudMesh = new THREE.Mesh(geometry, material);
     earthMesh.add(cloudMesh);
+
+
+    //Atmosphere
+    var geometry	= new THREE.SphereGeometry(1, 32, 32)
+	var material	= THREEx.createAtmosphereMaterial()
+	material.side	= THREE.BackSide
+	material.uniforms.glowColor.value.set(0x0041CC)
+	material.uniforms.coeficient.value	= 0.5
+	material.uniforms.power.value		= 2.5
+	var mesh	= new THREE.Mesh(geometry, material );
+	mesh.scale.multiplyScalar(1.05);
+	earthMesh.add( mesh );
 
 
     //Universe
@@ -68,8 +92,7 @@ function init() {
     scene.add(mesh);
 
 
-    setXYZ();
-
+    //setXYZ();
 
 
     //Camera
@@ -125,6 +148,7 @@ function animate() {
     requestAnimationFrame(animate);
 
     updateSatPosition();
+    updateEarthAngle();
  
     // Render the scene.
     renderer.render(scene, camera);
@@ -170,3 +194,19 @@ function updateSatPosition() {
     }
 }
 
+function updateEarthAngle() {
+ //earthMesh.rotation.y = - ( Math.PI / 2 );   
+
+    var hourAngle = Math.PI / 12;
+    var secondAngle = (hourAngle / 60) / 60;
+
+    var now = new Date();
+    var nowGMT = new Date(now.valueOf() + now.getTimezoneOffset() * 60000);
+    var currentMinutes = nowGMT.getMinutes();
+    var currentHours = nowGMT.getHours();
+    var currentSconds = nowGMT.getSeconds();
+
+    var totalSeconds = now.getSeconds() + (currentMinutes * 60) + ((currentHours * 60) * 60);
+    earthMesh.rotation.y = Math.PI / 2 + (secondAngle * totalSeconds);
+
+}

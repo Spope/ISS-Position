@@ -1,31 +1,16 @@
-var coordinateSystem = "Geo";//Gse
-var dataReqXml1 = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><DataRequest xmlns="http://sscweb.gsfc.nasa.gov/schema">';
-var dataReqXml2 = '<BFieldModel><InternalBFieldModel>IGRF-10</InternalBFieldModel><ExternalBFieldModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="Tsyganenko89cBFieldModel"><KeyParameterValues>KP3_3_3</KeyParameterValues></ExternalBFieldModel><TraceStopAltitude>100</TraceStopAltitude></BFieldModel>';
-var dataReqXml3 = '<OutputOptions><AllLocationFilters>true</AllLocationFilters><CoordinateOptions><CoordinateSystem>'+coordinateSystem+'</CoordinateSystem><Component>X</Component></CoordinateOptions><CoordinateOptions><CoordinateSystem>'+coordinateSystem+'</CoordinateSystem><Component>Y</Component></CoordinateOptions><CoordinateOptions><CoordinateSystem>'+coordinateSystem+'</CoordinateSystem><Component>Z</Component></CoordinateOptions><MinMaxPoints>2</MinMaxPoints></OutputOptions></DataRequest>';
-var sscUrl='http://sscweb.gsfc.nasa.gov/WS/sscr/2/locations';
-//var sscUrl='temp.xml';
-var earthRadiusKm = 6378;
-
-
 webservice = {
+    _this: this,
+    earthRadiusKm: 6378,
+    sscUrl: 'temp.xml',
+    //sscUrl: 'http://sscweb.gsfc.nasa.gov/WS/sscr/2/locations',
+
     request: function(satId, start, end) {
-        
-        var startDate = start.toISOString();
-        var endDate   = end.toISOString();
 
-        var timeReqXml = '<TimeInterval><Start>' + startDate +
-            '</Start><End>' + endDate + '</End></TimeInterval>';
-
-        var satReqXml = '';
-        satReqXml += '<Satellites><Id>' + satId + '</Id>' +
-                     '<ResolutionFactor>1</ResolutionFactor></Satellites>';
-
-        var request = dataReqXml1 + timeReqXml + dataReqXml2 + satReqXml + 
-                dataReqXml3;
+        var request = nasaRequest(satId, start, end);
 
         $.ajax({
             type: 'POST',
-            url: sscUrl + '', 
+            url: this.sscUrl + '', 
             data: request,
             dataType: 'xml',
             contentType: 'application/xml',
@@ -45,7 +30,6 @@ webservice = {
             return;
         }
         result = $.xml2json(result);
-        console.log(result);
         webservice.displaySatelliteTrajectory(result);
     },
 
@@ -59,9 +43,9 @@ webservice = {
             //Conversion to GEO coordinate
             data[i] = {
                 time: times[i],
-                x: y[i] / earthRadiusKm,
-                y: z[i] / earthRadiusKm,
-                z: x[i] / earthRadiusKm
+                x: y[i] / this.earthRadiusKm,
+                y: z[i] / this.earthRadiusKm,
+                z: x[i] / this.earthRadiusKm
             };
         }
 
@@ -83,6 +67,6 @@ webservice = {
 
 var start = new Date();
 var end = new Date();
-end = new Date(end.getTime() + 92*60000); //92 minutes
+end = new Date(end.getTime() + 184*60000);
 
 webservice.request('iss', start, end);
