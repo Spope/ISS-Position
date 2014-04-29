@@ -51,5 +51,6 @@ THREEx.createAtmosphereMaterial	= function(){
 		transparent	: true,
 		depthWrite	: false,
 	});
+
 	return material
 }

@@ -1,8 +1,8 @@
 webservice = {
     _this: this,
     earthRadiusKm: 6378,
-    //sscUrl: 'temp.xml',
-    sscUrl: 'http://sscweb.gsfc.nasa.gov/WS/sscr/2/locations',
+    sscUrl: 'temp.xml',
+    //sscUrl: 'http://sscweb.gsfc.nasa.gov/WS/sscr/2/locations',
 
     request: function(satId, start, end) {
 

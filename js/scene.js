@@ -3,10 +3,11 @@ var camera, controls, scene, renderer;
 var cross;
 var light;
 var earthMesh;
-var cloudMesh
+var cloudMesh;
 var sat;
 var receivedDate;
 var positionData;
+var uniforms;
 
 var timer;
 
@@ -25,7 +26,7 @@ function init() {
     //Light
     light = new THREE.DirectionalLight( 0xffffff, 1 );
     light.position.set( 0, 0, 5 );
-    light.castShadow	= true;
+    //light.castShadow	= true;
     scene.add(light);
 
     //Sat
@@ -34,23 +35,8 @@ function init() {
     sat = new THREE.Mesh(sphere, satMaterial);
     scene.add(sat);
 
-
     //EARTH
-    var geometry   = new THREE.SphereGeometry(1, 32, 32);
-    var material  = new THREE.MeshPhongMaterial();
-    material.map    = THREE.ImageUtils.loadTexture('img/earth/EarthMapAtmos_2500x1250.jpg');
-    material.bumpMap    = THREE.ImageUtils.loadTexture('img/earth/EarthElevation_2500x1250.jpg');
-    material.bumpScale = 0.002;
-    material.specularMap    = THREE.ImageUtils.loadTexture('img/earth/EarthMask_2500x1250.jpg');
-    material.specular  = new THREE.Color('grey');
-    material.shininess  = 10;
-
-    earthMesh = new THREE.Mesh(geometry, material);
-    
-    
-
-    earthMesh.receiveShadow	= true;
-	earthMesh.castShadow	= true;
+    earthMesh = Earth.createEarth();
     scene.add(earthMesh);
 
     //Night texture mesh
@@ -63,25 +49,12 @@ function init() {
     //earthMesh.add(lightMesh);
 
     //Cloud
-    var geometry   = new THREE.SphereGeometry(1.005, 32, 32);
-    var material  = new THREE.MeshPhongMaterial({
-      map         : THREE.ImageUtils.loadTexture('img/earth/cloudAlpha.png'),
-      transparent : true,
-    });
-    cloudMesh = new THREE.Mesh(geometry, material);
+    var cloudMesh = Earth.createCloud();
     earthMesh.add(cloudMesh);
 
-
     //Atmosphere
-    var geometry	= new THREE.SphereGeometry(1, 32, 32)
-	var material	= THREEx.createAtmosphereMaterial()
-	material.side	= THREE.BackSide
-	material.uniforms.glowColor.value.set(0x0041CC)
-	material.uniforms.coeficient.value	= 0.5
-	material.uniforms.power.value		= 2.5
-	var mesh	= new THREE.Mesh(geometry, material );
-	mesh.scale.multiplyScalar(1.05);
-	earthMesh.add( mesh );
+    var atmosphereMesh = Earth.createAtmosphere();
+    earthMesh.add(atmosphereMesh);
 
 
     //Universe
@@ -89,12 +62,11 @@ function init() {
     var material  = new THREE.MeshBasicMaterial();
     material.map   = THREE.ImageUtils.loadTexture('img/galaxy_starfield.png');
     material.side  = THREE.BackSide;
-    // create the mesh based on geometry and material
     var mesh  = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
 
-    //setXYZ();
+    setXYZ();
 
 
     //Camera
@@ -155,12 +127,22 @@ function animate() {
     // Read more about requestAnimationFrame at http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
     requestAnimationFrame(animate);
 
+    //updateEarthMaterial();
+    //var t = Date.now() * 0.001;
+    //var position = new THREE.Vector3();
+    //position.setFromMatrixPosition( camera.matrixWorld );
+    //window.uniforms.sunDirection.value.x = - position.x;
+    //window.uniforms.sunDirection.value.y = position.y;
+    //window.uniforms.sunDirection.value.z = position.z;
+
     updateSatPosition();
     updateEarthAngle();
  
     // Render the scene.
     renderer.render(scene, camera);
     controls.update();
+
+    //console.log(camera.matrixWorld.getPosition());
 }
 
 function drawOrbit(data) {
@@ -174,7 +156,7 @@ function drawOrbit(data) {
     }
     var line = new THREE.Line( lineGeometry, lineMaterial ); scene.add( line );
 
-    sat.position.set( data[0].x, data[0].y, data[0].z )
+    sat.position.set( data[0].x, data[0].y, data[0].z );
     
 }
 
@@ -195,7 +177,7 @@ function updateSatPosition() {
             console.log(current);
         }
         if(!next) {
-            console.error('No data for curret');
+            console.error('No data for next');
             console.log(deltaMinutes + 1);
             console.log(next);
         }
