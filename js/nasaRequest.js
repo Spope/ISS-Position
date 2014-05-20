@@ -17,4 +17,4 @@ var nasaRequest = function(satId, startTime, endTime) {
 
     return dataReqXml1 + timeReqXml + dataReqXml2 + satReqXml + 
             dataReqXml3;
-}
+};
