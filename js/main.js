@@ -56,6 +56,10 @@ function initScene() {
     createLensFlare();
     createUniverse();
 
+    updateEarthAngle();
+    updateSatPosition();
+    updateMoonPosition();
+
     render();
 }
 
@@ -361,6 +365,8 @@ function updateEarthAngle() {
 
     lensFlare.position.set( z, 0, x );
     sun.position.set(z, 0, x);
+
+    setTimeout(updateEarthAngle, 3000);
 }
 
 function render() {
@@ -369,11 +375,11 @@ function render() {
     requestAnimationFrame(render);
     controls.update();
 
-    eurlerLight = new THREE.Euler(0, 0, 0);
+    //eurlerLight = new THREE.Euler(0, 0, 0);
 
-    updateEarthAngle();
-    updateSatPosition();
-    updateMoonPosition();
+    //updateEarthAngle();
+    //updateSatPosition();
+    //updateMoonPosition();
 
     vector = new THREE.Vector3(1, 0, 0);
     matrix = new THREE.Matrix4().makeRotationFromEuler(eurlerLight);
@@ -415,6 +421,8 @@ function updateSatPosition() {
             position.z
         );
     }
+
+    setTimeout(updateSatPosition, 100);
 }
 
 function satPosition(data) {
@@ -442,6 +450,8 @@ function updateMoonPosition() {
             position.z
         );
     }
+
+    setTimeout(updateMoonPosition, 1000);
 }
 
 function interpolatePosition(data, receivedDate){
@@ -449,6 +459,7 @@ function interpolatePosition(data, receivedDate){
     var first = new Date(data[0].time);
     var now = new Date();
     var seconds = now.getSeconds();
+    var milliseconds = now.getMilliseconds();
 
     var deltaMinutes = now.getMinutes() - receivedDate.getMinutes();
 
@@ -470,15 +481,19 @@ function interpolatePosition(data, receivedDate){
         console.log(next);
     }
 
-    var deltaX  = (next.x - current.x) / 60;
-    var deltaY  = (next.y - current.y) / 60;
-    var deltaZ  = (next.z - current.z) / 60;
+    var deltaX  = ((next.x - current.x) / 60);
+    var deltaY  = ((next.y - current.y) / 60);
+    var deltaZ  = ((next.z - current.z) / 60);
+
+    var milliDeltaX  = deltaX / 1000;
+    var milliDeltaY  = deltaY / 1000;
+    var milliDeltaZ  = deltaZ / 1000;
 
     var position = {};
     
-    position.x = current.x + (deltaX * seconds);
-    position.y = current.y + (deltaY * seconds);
-    position.z = current.z + (deltaZ * seconds);
+    position.x = current.x + (deltaX * seconds) + (milliDeltaX * milliseconds);
+    position.y = current.y + (deltaY * seconds) + (milliDeltaY * milliseconds);
+    position.z = current.z + (deltaZ * seconds) + (milliDeltaZ * milliseconds);
 
     return position;
 }
