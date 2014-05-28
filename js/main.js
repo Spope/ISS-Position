@@ -6,6 +6,7 @@ var uniforms;
 var controls;
 var earthPositionData;
 var earthReceivedDate;
+var moon;
 var moonPositionData;
 var moonReceivedDate;
 var lensFlare;
@@ -32,10 +33,13 @@ function initScene() {
 
     scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(70, (window.innerWidth-15) / (window.innerHeight*0.8), 0.1, 1000000);
+    var width = $(window).width();
+    var height = Math.round($(window).height() * 0.8);
+
+    camera = new THREE.PerspectiveCamera(70, width / height, 0.1, 1000000);
     camera.position.set(0, 0, 300);
     renderer = new THREE.WebGLRenderer({alpha: true});
-    renderer.setSize(window.innerWidth - 15, window.innerHeight * 0.8);
+    renderer.setSize(width, height);
     renderer.setClearColorHex(0x000000, 1);
     document.getElementById('canvas').appendChild(renderer.domElement);
 
@@ -65,8 +69,8 @@ function initScene() {
 
 function onWindowResize() {
 
-    var WIDTH = window.innerWidth - 15;
-    var HEIGHT = window.innerHeight * 0.8;
+    var WIDTH = $(window).width();
+    var HEIGHT = Math.round($(window).height() * 0.8);
     renderer.setSize(WIDTH, HEIGHT);
     camera.aspect = WIDTH / HEIGHT;
     camera.updateProjectionMatrix();
@@ -451,7 +455,7 @@ function updateMoonPosition() {
         );
     }
 
-    setTimeout(updateMoonPosition, 1000);
+    setTimeout(updateMoonPosition, 200);
 }
 
 function interpolatePosition(data, receivedDate){

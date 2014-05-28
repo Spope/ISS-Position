@@ -7,13 +7,27 @@
     <meta property="og:image" content="img/screenshot.png"/>
     <meta name="description" content="IssPosition shows you the Iss Position in realtime on a realistic 3D earth." />
     <meta name="keywords" content="WebGL, three.js, Earth, realistic, 3d, ISS" />
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    
+    <title>ISS Position</title>
+
+<?php 
+$debug = true;
+if(!$debug){
+?>
+    <script src="js/build/lib.min.js"></script>
+<?php
+}else {
+    ?>
     <script src="js/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="js/others/three.min.js"></script>
     <script src="js/others/orbitControll.js"></script>
     <script src="js/others/xmlToJson.js"></script>
     <script src="js/others/detector.js"></script>
-    
-    <title></title>
+<?php
+}   
+?>
+
 </head>
 <body>
 <div id="fb-root"></div>
@@ -26,6 +40,11 @@
 }(document, 'script', 'facebook-jssdk'));</script>
 <div id="header">
     <div id="canvas"></div>
+    <div id="bottom">
+        <a id="btn-bottom">
+            <img src="img/bottom.png" width="40" height="40" />
+        </a>
+    </div>
 </div>
 
 <div class="container">
@@ -33,7 +52,7 @@
         <h1 class="col-md-12">ISS Position</h1>
 
         <div class="col-md-12">
-            <p>This show this ISS position (and the moon if you can spot it) in real time. Positions are retrieved from <a href="http://sscweb.gsfc.nasa.gov/WebServices/REST/" title="NASA SSC Rest API" target="_blank">NASA SSC</a>. Sun position is estimated from current time.</p>
+            <p>This show this ISS position (and the moon if you can spot it) in real time. Positions are retrieved from <a href="http://sscweb.gsfc.nasa.gov/WebServices/REST/" title="NASA SSC Rest API" target="_blank">NASA SSC</a>. Sun position is estimated from current time. You can check that the positions are correct by looking the real time ISS streaming <a title="ISS HD Earth Viewing Experiment" href="http://www.ustream.tv/channel/iss-hdev-payload">here</a></p>
             <p>The scene is made using <a href="http://threejs.org/" title="Three.js" target="_blank">Three.js</a>. Earth shader is made by <a href="http://http.developer.nvidia.com/GPUGems2/gpugems2_chapter16.html" title="Sean O'Neil Atmospheric Scattering" target="_blank">Sean O'Neil</a>, and adapted by <a href="https://github.com/rSimulate/WebHexPlanet/issues/8" title="Xam1234" target="_blank">Xam1234</a>.</p>
             <br />
             <p>Made by <a href="http://spope.fr" title="Spope's portfolio">Spope</a>.</p>
@@ -332,10 +351,6 @@
 
     void main (void)
     {
-        //gl_FragColor = vec4(c0, 1.0);
-        //gl_FragColor = vec4(0.25 * c0, 1.0);
-        //gl_FragColor = gl_Color + texture2D(s2Tex1, gl_TexCoord[0].st) * texture2D(s2Tex2, gl_TexCoord[1].st) * gl_SecondaryColor;
-
         //Spope
 /*
         float shininess = (texture2D(tSpecular, vec2(vUv.s, vUv.t)).r * 255.0) + 0.1; // Apparament incorect > le pow() a besoin d'une virgule
@@ -547,7 +562,19 @@
     }
 </script>
 
-<script src="js/nasaRequest.js"></script>
-<script src="js/nasaWebservice.js"></script>
-<script src="js/main.js"></script>
+<?php 
+if(!$debug){
+?>
+    <script src="js/build/main.min.js"></script>
+<?php
+}else {
+?>
+    <script src="js/nasaRequest.js"></script>
+    <script src="js/nasaWebservice.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/action.js"></script>
+<?php
+}   
+?>
+
 </html>
