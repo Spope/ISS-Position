@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="js/bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css" media="all" />
     <meta property="og:image" content="img/screenshot.png"/>
-    <meta name="description" content="IssPosition shows you the Iss Position in realtime on a realistic 3D earth." />
+    <meta name="description" content="ISS Position shows you the ISS Position in realtime on a realistic 3D earth." />
     <meta name="keywords" content="WebGL, three.js, Earth, realistic, 3d, ISS" />
     <meta name="viewport" content="width=device-width, user-scalable=no">
     
@@ -52,8 +52,8 @@ if(!$debug){
         <h1 class="col-md-12">ISS Position</h1>
 
         <div class="col-md-12">
-            <p>This show this ISS position (and the moon if you can spot it) in real time. Positions are retrieved from <a href="http://sscweb.gsfc.nasa.gov/WebServices/REST/" title="NASA SSC Rest API" target="_blank">NASA SSC</a>. Sun position is estimated from current time. You can check that the positions are correct by looking the real time ISS streaming <a title="ISS HD Earth Viewing Experiment" href="http://www.ustream.tv/channel/iss-hdev-payload">here</a></p>
-            <p>The scene is made using <a href="http://threejs.org/" title="Three.js" target="_blank">Three.js</a>. Earth shader is made by <a href="http://http.developer.nvidia.com/GPUGems2/gpugems2_chapter16.html" title="Sean O'Neil Atmospheric Scattering" target="_blank">Sean O'Neil</a>, and adapted by <a href="https://github.com/rSimulate/WebHexPlanet/issues/8" title="Xam1234" target="_blank">Xam1234</a>.</p>
+            <p>This show this ISS position (and the moon if you can spot it) in real time. Positions are retrieved from <a href="http://sscweb.gsfc.nasa.gov/WebServices/REST/" title="NASA SSC Rest API" target="_blank">NASA SSC</a>. Sun position is estimated from current time. You can check that the positions are correct <a href="http://www.esa.int/Our_Activities/Human_Spaceflight/International_Space_Station/Where_is_the_International_Space_Station" title="Where is the International Space Station ?" target="_blank">here</a> or by looking the real time ISS streaming <a title="ISS HD Earth Viewing Experiment" href="http://www.ustream.tv/channel/iss-hdev-payload" target="_blank">here</a></p>
+            <p>The scene is made using <a href="http://threejs.org/" title="Three.js" target="_blank">Three.js</a>. Earth shader is made by <a href="http://http.developer.nvidia.com/GPUGems2/gpugems2_chapter16.html" title="Sean O'Neil Atmospheric Scattering" target="_blank">Sean O'Neil</a>, ported for use with three.js/WebGL by James Baicoianu.</p>
             <br />
             <p>Made by <a href="http://spope.fr" title="Spope's portfolio">Spope</a>.</p>
         </div>
@@ -333,9 +333,6 @@ if(!$debug){
     //
     // Ported for use with three.js/WebGL by James Baicoianu
 
-    //uniform sampler2D s2Tex1;
-    //uniform sampler2D s2Tex2;
-
     uniform float fNightScale;
     uniform vec3 v3LightPosition;
     uniform sampler2D tDiffuse;
@@ -352,7 +349,7 @@ if(!$debug){
     void main (void)
     {
         //Spope
-/*
+        /*
         float shininess = (texture2D(tSpecular, vec2(vUv.s, vUv.t)).r * 255.0) + 0.1; // Apparament incorect > le pow() a besoin d'une virgule
         vec3 reflectionDirection = reflect(-v3LightPosition, vNormal);
         float specularLightWeighting;
@@ -372,22 +369,13 @@ if(!$debug){
         //vec3 lightWeighting = vec3(1, 1, 1);
 
         vec4 fragmentColor = vec4(1.0, 1.0, 1.0, 1.0);
-        //vec4 temp = vec4(fragmentColor.rgb * lightWeighting, fragmentColor.a);
+        vec4 temp = vec4(fragmentColor.rgb * lightWeighting, fragmentColor.a);
 
-        float mid = 0.5;
-        float vRotation = 1.57;
-        vec2 rotated = vec2(cos(vRotation) * (gl_PointCoord.x - mid) + sin(vRotation) * (gl_PointCoord.y - mid) + mid,
-            cos(vRotation) * (gl_PointCoord.y - mid) - sin(vRotation) * (gl_PointCoord.x - mid) + mid);
+        //float mid = 0.5;
+        //float vRotation = 1.57;
+        //vec2 rotated = vec2(cos(vRotation) * (gl_PointCoord.x - mid) + sin(vRotation) * (gl_PointCoord.y - mid) + mid,
+            //cos(vRotation) * (gl_PointCoord.y - mid) - sin(vRotation) * (gl_PointCoord.x - mid) + mid);
 
-
-        vec3 diffuseTex = texture2D( tDiffuse, vUv ).xyz;
-        vec3 diffuseNightTex = texture2D( tDiffuseNight, vUv ).xyz;
-
-        vec3 day = diffuseTex * c0;
-        vec3 night = fNightScale * diffuseNightTex * diffuseNightTex * diffuseNightTex * (1.0 - c0);
-
-        gl_FragColor = (vec4(c1, 1.0) + vec4(day + night, 1.0));
-*/
 
         vec3 diffuseTex = texture2D( tDiffuse, vUv ).xyz;
         vec3 diffuseNightTex = texture2D( tDiffuseNight, vUv ).xyz;
@@ -396,6 +384,16 @@ if(!$debug){
         vec3 night = fNightScale * diffuseNightTex * diffuseNightTex * diffuseNightTex * (1.0 - c0);
 
         gl_FragColor = vec4(c1, 1.0) + vec4(day + night, 1.0);
+        */
+
+        vec3 diffuseTex = texture2D( tDiffuse, vUv ).xyz;
+        vec3 diffuseNightTex = texture2D( tDiffuseNight, vUv ).xyz;
+
+        vec3 day = diffuseTex * c0;
+        vec3 night = fNightScale * diffuseNightTex * diffuseNightTex * diffuseNightTex * (1.0 - c0);
+
+        gl_FragColor = vec4(c1, 1.0) + vec4(day + night, 1.0);
+
         //ORIGINAL
         /*
         vec3 diffuseTex = texture2D( tDiffuse, vUv ).xyz;
