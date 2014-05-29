@@ -82,7 +82,7 @@ if(!$debug){
             </div>
 
             <div class="fll">
-                <div class="fb-share-button" data-href="http://projects.spope.fr/issposition" data-type="button_count"></div>
+                <div class="fb-share-button" data-href="http://projects.spope.fr/iss-position/" data-type="button_count"></div>
             </div>
         </div>
         <div class="clearfix"></div>
