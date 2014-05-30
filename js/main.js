@@ -17,14 +17,6 @@ var cloud;
 var sat;
 var sun;
 
-//Retrieving shaders
-var vertexSky = document.getElementById('vertexSky').textContent;
-var fragmentSky = document.getElementById('fragmentSky').textContent;
-var vertexGround = document.getElementById('vertexGround').textContent;
-var fragmentGround = document.getElementById('fragmentGround').textContent;
-var vertexCloud = document.getElementById('vertexCloud').textContent;
-var fragmentCloud = document.getElementById('fragmentCloud').textContent;
-
 function initScene() {
 
     if (!Detector.webgl){

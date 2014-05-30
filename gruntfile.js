@@ -35,7 +35,7 @@ module.exports = function(grunt) {
             my_target: {
                 files: {
                     'js/build/lib.min.js': ['js/bower_components/jquery/dist/jquery.min.js', 'js/others/three.min.js', 'js/others/orbitControll.js', 'js/others/xmlToJson.js', 'js/others/detector.js'],
-                    'js/build/main.min.js': ['js/nasaRequest.js', 'js/nasaWebservice.js', 'js/main.js', 'js/action.js'],
+                    'js/build/main.min.js': ['js/shader.js', 'js/nasaRequest.js', 'js/nasaWebservice.js', 'js/main.js', 'js/action.js'],
                 }
             }
         }
