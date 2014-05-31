@@ -54,6 +54,7 @@ if(!$debug){
         <div class="col-md-12">
             <p>This show this ISS position (and the moon if you can spot it) in real time. Positions are retrieved from <a href="http://sscweb.gsfc.nasa.gov/WebServices/REST/" title="NASA SSC Rest API" target="_blank">NASA SSC</a>. Sun position is estimated from current time. You can check that the positions are correct <a href="http://www.esa.int/Our_Activities/Human_Spaceflight/International_Space_Station/Where_is_the_International_Space_Station" title="Where is the International Space Station ?" target="_blank">here</a> or by looking the real time ISS streaming <a title="ISS HD Earth Viewing Experiment" href="http://www.ustream.tv/channel/iss-hdev-payload" target="_blank">here</a>.</p>
             <p>The scene is made using <a href="http://threejs.org/" title="Three.js" target="_blank">Three.js</a>. Earth shader is made by <a href="http://http.developer.nvidia.com/GPUGems2/gpugems2_chapter16.html" title="Sean O'Neil Atmospheric Scattering" target="_blank">Sean O'Neil</a>, ported for use with three.js/WebGL by James Baicoianu.</p>
+            <p>If you have any questions or suggestions, feel free to conctact me on <a href="https://twitter.com/spopila" title="Spopila" target="_blank">Twitter</a>.</p>
             <br />
             <p>Made by <a href="http://spope.fr" title="Spope's portfolio">Spope</a>.</p>
         </div>
