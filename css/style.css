@@ -26,6 +26,10 @@ html, body {
     background: url('../img/screenshot.png') center center black;
 }
 
+.description-img {
+    display: none;
+}
+
 #share {
     margin-bottom: 20px;
 }

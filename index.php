@@ -87,6 +87,7 @@ if(!$debug){
             </div>
         </div>
         <div class="clearfix"></div>
+        <img class="description-img" src="img/screenshot.png" />
     </div>
 </div>
 </body>
