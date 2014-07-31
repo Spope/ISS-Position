@@ -28,7 +28,7 @@ function initScene() {
     var width = $(window).width();
     var height = Math.round($(window).height() * 0.8);
 
-    camera = new THREE.PerspectiveCamera(70, width / height, 0.1, 1000000);
+    camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000000);
     camera.position.set(0, 0, 300);
     renderer = new THREE.WebGLRenderer({alpha: true});
     renderer.setSize(width, height);
@@ -278,7 +278,8 @@ function createSatellite() {
 }
 
 function createUniverse() {
-    var diffuseUniverse = THREE.ImageUtils.loadTexture('img/galaxy_starfield.png');
+    var diffuseUniverse = THREE.ImageUtils.loadTexture('img/galaxy.jpg');
+    //var diffuseUniverse = THREE.ImageUtils.loadTexture('img/galaxy_starfield.png');
     var universe = {
         geometry: new THREE.SphereGeometry(1000000, 32, 32),
         material: new THREE.MeshBasicMaterial()

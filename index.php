@@ -15,7 +15,7 @@
 $debug = false;
 if(!$debug){
 ?>
-    <script src="js/build/lib.min.js"></script>
+    <script src="js/build/lib.min.js?v=1"></script>
 <?php
 }else {
     ?>
