@@ -281,7 +281,7 @@ function createUniverse() {
     var diffuseUniverse = THREE.ImageUtils.loadTexture('img/galaxy.jpg');
     //var diffuseUniverse = THREE.ImageUtils.loadTexture('img/galaxy_starfield.png');
     var universe = {
-        geometry: new THREE.SphereGeometry(1000000, 32, 32),
+        geometry: new THREE.SphereGeometry(100000, 32, 32),
         material: new THREE.MeshBasicMaterial()
     };
     universe.material.map = diffuseUniverse;
