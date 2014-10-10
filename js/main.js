@@ -281,7 +281,7 @@ function createUniverse() {
     var diffuseUniverse = THREE.ImageUtils.loadTexture('img/galaxy.jpg');
     //var diffuseUniverse = THREE.ImageUtils.loadTexture('img/galaxy_starfield.png');
     var universe = {
-        geometry: new THREE.SphereGeometry(100000, 32, 32),
+        geometry: new THREE.SphereGeometry(500000, 32, 32),
         material: new THREE.MeshBasicMaterial()
     };
     universe.material.map = diffuseUniverse;
@@ -357,8 +357,8 @@ function updateEarthAngle() {
 
     //Lensflare position
     var angleDegree = angle + (Math.PI / 2);// * (180/Math.PI);
-    var z = 500000 * Math.sin(angleDegree); 
-    var x = 500000 * Math.cos(angleDegree);
+    var z = 240000 * Math.sin(angleDegree); 
+    var x = 240000 * Math.cos(angleDegree);
 
     lensFlare.position.set( z, 0, x );
     sun.position.set(z, 0, x);

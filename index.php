@@ -12,7 +12,7 @@
     <title>ISS Position</title>
 
 <?php 
-$debug = false;
+$debug = true;
 if(!$debug){
 ?>
     <script src="js/build/lib.min.js?v=1"></script>
