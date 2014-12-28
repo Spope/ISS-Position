@@ -12,7 +12,7 @@
     <title>ISS Position</title>
 
 <?php 
-$debug = true;
+$debug = false;
 if(!$debug){
 ?>
     <script src="js/build/lib.min.js?v=1"></script>
@@ -42,7 +42,7 @@ if(!$debug){
     <div id="canvas"></div>
     <div id="bottom">
         <a id="btn-bottom">
-            <img src="img/bottom.png" width="40" height="40" />
+            <img id="img-scroll" src="img/bottom.png" width="40" height="40" />
         </a>
     </div>
 </div>
