@@ -51,6 +51,7 @@ function initScene() {
     createMoon();
     createLensFlare();
     createUniverse();
+    //setXYZ();
 
     updateEarthAngle();
     updateSatPosition();
@@ -315,6 +316,33 @@ function createLensFlare() {
 }
 
 function setXYZ() {
+    var testM = new THREE.LineBasicMaterial({ color: 0xB50015 });//red
+    var testGeometry = new THREE.Geometry();
+    testGeometry.vertices.push( new THREE.Vector3( 0, 0, 0) );
+    var now = new Date();
+    var month = now.getMonth() + 1;
+    var vals = {
+        1  : -23.44,
+        2  : -15.53,
+        3  : -7.62,
+        4  : 0.29,
+        5  : 7.62,
+        6  : 15.53,
+        7  : 23.44,
+        8  : 15.53,
+        9  : 7.62,
+        10 : -0.29,
+        11 : -7.62,
+        12 : -15.53
+    };
+    var todayAngle = vals[month];
+    var x = 240000 * Math.cos(todayAngle * 2 * Math.PI / 360);
+    var y = 240000 * Math.sin(todayAngle * 2 * Math.PI / 360);
+    var z = 0;
+    testGeometry.vertices.push( new THREE.Vector3( x, y, z) );
+    var test = new THREE.Line( testGeometry, testM );
+    scene.add( test );
+
     //XYZ lines
     var xMaterial = new THREE.LineBasicMaterial({ color: 0xB50015 });//red
     var xGeometry = new THREE.Geometry();
@@ -355,15 +383,40 @@ function updateEarthAngle() {
     var angle = Math.PI - (secondAngle * totalSeconds);
     eurlerLight = new THREE.Euler(0, angle, 0);
 
+    var todayAngle = getTodayEarthAngle();
+
     //Lensflare position
     var angleDegree = angle + (Math.PI / 2);// * (180/Math.PI);
     var z = 240000 * Math.sin(angleDegree); 
     var x = 240000 * Math.cos(angleDegree);
+    var y = 240000 * Math.sin(todayAngle * 2 * Math.PI / 360);
 
-    lensFlare.position.set( z, 0, x );
-    sun.position.set(z, 0, x);
+    lensFlare.position.set( z, y, x );
+    sun.position.set(z, y, x);
 
     setTimeout(updateEarthAngle, 3000);
+}
+
+function getTodayEarthAngle() {
+    var now = new Date();
+    var month = now.getMonth() + 1;
+    var vals = {
+        1  : -23.44,
+        2  : -15.53,
+        3  : -7.62,
+        4  : 0.29,
+        5  : 7.62,
+        6  : 15.53,
+        7  : 23.44,
+        8  : 15.53,
+        9  : 7.62,
+        10 : -0.29,
+        11 : -7.62,
+        12 : -15.53
+    };
+    var todayAngle = vals[month];
+
+    return todayAngle;
 }
 
 function render() {
@@ -372,13 +425,10 @@ function render() {
     requestAnimationFrame(render);
     controls.update();
 
-    //eurlerLight = new THREE.Euler(0, 0, 0);
+    var todayAngle = getTodayEarthAngle();
+    var y = Math.sin(todayAngle * 2 * Math.PI / 360);
 
-    //updateEarthAngle();
-    //updateSatPosition();
-    //updateMoonPosition();
-
-    vector = new THREE.Vector3(1, 0, 0);
+    vector = new THREE.Vector3(1, y, 0);
     matrix = new THREE.Matrix4().makeRotationFromEuler(eurlerLight);
     light  = vector.applyProjection(matrix);
 
