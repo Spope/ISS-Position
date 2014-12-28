@@ -225,7 +225,7 @@ function createEarth() {
     ground.mesh.receiveShadow = true;
     scene.add(ground.mesh);
 
-    var atmosphereResolution = 100;
+    var atmosphereResolution = 150;
     sky = {
         geometry: new THREE.SphereGeometry(atmosphere.outerRadius, atmosphereResolution, atmosphereResolution),
         material: new THREE.ShaderMaterial({
