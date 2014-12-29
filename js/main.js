@@ -399,22 +399,13 @@ function updateEarthAngle() {
 
 function getTodayEarthAngle() {
     var now = new Date();
-    var month = now.getMonth() + 1;
-    var vals = {
-        1  : -23.44,
-        2  : -15.53,
-        3  : -7.62,
-        4  : 0.29,
-        5  : 7.62,
-        6  : 15.53,
-        7  : 23.44,
-        8  : 15.53,
-        9  : 7.62,
-        10 : -0.29,
-        11 : -7.62,
-        12 : -15.53
-    };
-    var todayAngle = vals[month];
+    var start = new Date(now.getFullYear(), 0, 0);
+    var diff = now - start;
+    var oneDay = 1000 * 60 * 60 * 24;
+    var day = Math.floor(diff / oneDay);
+
+    var radianAngle = Math.asin(Math.sin(23.45 * (Math.PI/180)) * Math.sin(((360/365) * (day - 81)) * (Math.PI/180) ));
+    var todayAngle = 180 * radianAngle / Math.PI;
 
     return todayAngle;
 }
