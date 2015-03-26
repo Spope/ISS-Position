@@ -60,6 +60,7 @@ if(!$debug){
             If you have any questions or suggestions, feel free to conctact me on <a href="https://twitter.com/spopila" title="Spopila" target="_blank">Twitter</a>.</p>
             <br />
             <p>Made by <a href="http://spope.fr" title="Spope's portfolio">Spope</a>.</p>
+            <p>you can also look at my other space project, <a href="http://projects.spope.fr/curiosity" title="Curiosity's Trip">Cusiosity's Trip</a></p>
         </div>
     </div>
 
