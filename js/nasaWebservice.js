@@ -3,7 +3,8 @@ var GetPosition = function(satId, start, end, callback) {
     this.satId = satId;
     this.earthRadiusKm = 6378 / 100;
     //this.sscUrl = 'moon.xml',
-    this.sscUrl = 'http://sscweb.gsfc.nasa.gov/WS/sscr/2/locations';
+    this.sscUrl = 'https://sscweb.gsfc.nasa.gov/WS/sscr/2/locations';
+    //this.sscUrl = 'https://projects.spope.fr/iss-position/nasa-call/';
     this.callback = callback;
 };
 
@@ -13,12 +14,12 @@ GetPosition.prototype.request = function() {
 
     $.ajax({
         type: 'POST',
-        url: this.sscUrl + '', 
+        url: this.sscUrl + '',
         data: request,
         dataType: 'xml',
         contentType: 'application/xml',
         processData: false,
-        success: this.displayData.bind(this), 
+        success: this.displayData.bind(this),
         error: this.dataError
     });
 };
@@ -56,14 +57,14 @@ GetPosition.prototype.displaySatelliteTrajectory = function(result) {
 };
 
 GetPosition.prototype.dataError = function(xmlHttpRequest, textStatus, errorThrown) {
-    var errDoc = $.parseXML(xmlHttpRequest.responseText); 
+    var errDoc = $.parseXML(xmlHttpRequest.responseText);
     /* errDoc contains xhtml that we might want to display.
     Alternately, just display the Message and Description values. */
 
     var msg = $(errDoc).find('.ErrorMessage').text();
     var description = $(errDoc).find('.ErrorDescription').text();
 
-    alert("Server request error:\n  HTTP error: " + errorThrown + 
+    alert("Server request error:\n  HTTP error: " + errorThrown +
         "\n  " + msg + "\n  " + description);
 };
 
