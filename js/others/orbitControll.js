@@ -151,7 +151,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 		// get X column of matrix
 		panOffset.set( te[ 0 ], te[ 1 ], te[ 2 ] );
 		panOffset.multiplyScalar( - distance );
-		
+
 		pan.add( panOffset );
 
 	};
@@ -164,11 +164,11 @@ THREE.OrbitControls = function ( object, domElement ) {
 		// get Y column of matrix
 		panOffset.set( te[ 4 ], te[ 5 ], te[ 6 ] );
 		panOffset.multiplyScalar( distance );
-		
+
 		pan.add( panOffset );
 
 	};
-	
+
 	// pass in x,y of change desired in pixel space,
 	// right and down are positive
 	this.pan = function ( deltaX, deltaY ) {
@@ -264,7 +264,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		// restrict radius to be between desired limits
 		radius = Math.max( this.minDistance, Math.min( this.maxDistance, radius ) );
-		
+
 		// move target to panned location
 		this.target.add( pan );
 
@@ -400,7 +400,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 			panEnd.set( event.clientX, event.clientY );
 			panDelta.subVectors( panEnd, panStart );
-			
+
 			scope.pan( panDelta.x, panDelta.y );
 
 			panStart.copy( panEnd );
@@ -431,15 +431,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		var delta = 0;
 
-		if ( event.wheelDelta !== undefined ) { // WebKit / Opera / Explorer 9
 
-			delta = event.wheelDelta;
-
-		} else if ( event.detail !== undefined ) { // Firefox
-
-			delta = - event.detail;
-
-		}
+			delta = event.deltaY;
 
 		if ( delta > 0 ) {
 
@@ -455,12 +448,13 @@ THREE.OrbitControls = function ( object, domElement ) {
 		scope.dispatchEvent( startEvent );
 		scope.dispatchEvent( endEvent );
 
+        return false;
 	}
 
 	function onKeyDown( event ) {
 
 		if ( scope.enabled === false || scope.noKeys === true || scope.noPan === true ) return;
-		
+
 		switch ( event.keyCode ) {
 
 			case scope.keys.UP:
@@ -596,7 +590,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 				panEnd.set( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
 				panDelta.subVectors( panEnd, panStart );
-				
+
 				scope.pan( panDelta.x, panDelta.y );
 
 				panStart.copy( panEnd );
@@ -623,8 +617,9 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	this.domElement.addEventListener( 'contextmenu', function ( event ) { event.preventDefault(); }, false );
 	this.domElement.addEventListener( 'mousedown', onMouseDown, false );
-	this.domElement.addEventListener( 'mousewheel', onMouseWheel, false );
-	this.domElement.addEventListener( 'DOMMouseScroll', onMouseWheel, false ); // firefox
+	//this.domElement.addEventListener( 'mousewheel', onMouseWheel, false );
+	//this.domElement.addEventListener( 'DOMMouseScroll', onMouseWheel, false ); // firefox
+    this.domElement.addEventListener( 'wheel', onMouseWheel, false ); // firefox
 
 	this.domElement.addEventListener( 'touchstart', touchstart, false );
 	this.domElement.addEventListener( 'touchend', touchend, false );

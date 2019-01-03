@@ -8,10 +8,10 @@
     <meta name="description" content="ISS Position shows you the ISS Position in realtime on a realistic 3D earth." />
     <meta name="keywords" content="WebGL, three.js, Earth, realistic, 3d, ISS" />
     <meta name="viewport" content="width=device-width, user-scalable=no">
-    
+
     <title>ISS Position</title>
 
-<?php 
+<?php
 $debug = false;
 if(!$debug){
 ?>
@@ -25,7 +25,7 @@ if(!$debug){
     <script src="js/others/xmlToJson.js"></script>
     <script src="js/others/detector.js"></script>
 <?php
-}   
+}
 ?>
 
 </head>
@@ -94,9 +94,8 @@ if(!$debug){
         <img class="description-img" src="img/screenshot.png" />
     </div>
 </div>
-</body>
 
-<?php 
+<?php
 if(!$debug){
 ?>
     <script src="js/build/main.min.js"></script>
@@ -119,7 +118,8 @@ if(!$debug){
     <script src="js/main.js"></script>
     <script src="js/action.js"></script>
 <?php
-}   
+}
 ?>
 
+</body>
 </html>

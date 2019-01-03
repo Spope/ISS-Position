@@ -10,7 +10,5 @@
     "grunt-contrib-less": "*",
     "grunt-contrib-uglify": "*"
   },
-  "devDependencies": {
-    
-  }
+  "devDependencies": {}
 }

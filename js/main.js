@@ -387,7 +387,7 @@ function updateEarthAngle() {
 
     //Lensflare position
     var angleDegree = angle + (Math.PI / 2);// * (180/Math.PI);
-    var z = 240000 * Math.sin(angleDegree); 
+    var z = 240000 * Math.sin(angleDegree);
     var x = 240000 * Math.cos(angleDegree);
     var y = 240000 * Math.sin(todayAngle * 2 * Math.PI / 360);
 
@@ -411,7 +411,7 @@ function getTodayEarthAngle() {
 }
 
 function render() {
-    
+
     var cameraHeight, eye, light, matrix, vector;
     requestAnimationFrame(render);
     controls.update();
@@ -528,7 +528,7 @@ function interpolatePosition(data, receivedDate){
     var milliDeltaZ  = deltaZ / 1000;
 
     var position = {};
-    
+
     position.x = current.x + (deltaX * seconds) + (milliDeltaX * milliseconds);
     position.y = current.y + (deltaY * seconds) + (milliDeltaY * milliseconds);
     position.z = current.z + (deltaZ * seconds) + (milliDeltaZ * milliseconds);
